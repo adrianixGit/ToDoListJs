@@ -21,34 +21,42 @@ addButton.addEventListener('click', (e) => {
         taskName:inputValue,
     })
 
+
     renderView();
-    console.log(Tasks);
+
 })
 
 
 renderView = () => {
 
-    let render;
-    const ul = document.createElement('ul');
+    container.innerHTML = '';
+    let render = ``;
 
-    Tasks.map(({id, taskName}) => {
-        ul.innerHTML = '';
-         const li = document.createElement('li')
-        li.innerHTML = `${taskName}` + `<button class="deleteButton">Usuń</button>`;
-         ul.appendChild(li);
+
+    Tasks.forEach(({id, taskName}, index) => {
+        render += `
+           <div id="${id}">
+            <div>${taskName}</div>
+            <button class="dltButton" id="${index+1}">X</button>
+           </div>
+        `
+        return render;
     })
-    container.appendChild(ul);
-    deleteTask(id);
+    container.insertAdjacentHTML("beforeend", render)
+    deleteTask()
 }
 
 
-deleteTask = (id) => {
-    const deleteButtons = [...document.querySelectorAll('.deleteButton')];
+
+const deleteTask = (index) => {
+    const deleteButtons = [...document.querySelectorAll('.dltButton')];
+    console.log(deleteButtons)
     deleteButtons.forEach((deleteButton) => {
         deleteButton.addEventListener('click', () => {
-            console.log('siemka')
+            Tasks.splice(deleteButton.id-1, 1);
+            renderView();
         })
-    })pastylka
+    })
 
 
 }
